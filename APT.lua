@@ -99,7 +99,7 @@ Tab:AddToggle({
                         fireproximityprompt(descendant)
                     end
                 end
-                task.wait(0.01)
+                task.wait(0.5)
             end
         else
             autoInteract = false
