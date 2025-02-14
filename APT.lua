@@ -133,3 +133,11 @@ loadstring(game:HttpGet('https://pastebin.com/raw/3Rnd9rHf'))()
 
 end
 })
+Tab:AddButton({
+	Name = "甩飞",
+	Callback = function()
+
+loadstring(game:HttpGet("https://pastebin.com/raw/zqyDSUWX"))()
+
+end
+})
