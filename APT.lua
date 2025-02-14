@@ -125,3 +125,11 @@ end
 
 end
 })
+Tab:AddButton({
+	Name = "隐形[FE]",
+	Callback = function()
+
+loadstring(game:HttpGet('https://pastebin.com/raw/3Rnd9rHf'))()
+
+end
+})
