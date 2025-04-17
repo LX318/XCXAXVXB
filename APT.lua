@@ -84,28 +84,41 @@ local Tab = Window:MakeTab({
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
+
 -- 定义自动互动的全局变量
 local autoInteract = false
 
 Tab:AddToggle({
-    Name = "自动互动",
+    Name = "自动互动 (10米内)",
     Callback = function(state)
-    
-        if state then
-            autoInteract = true
-            while autoInteract do
-                for _, descendant in pairs(workspace:GetDescendants()) do
-                    if descendant:IsA("ProximityPrompt") then
-                        fireproximityprompt(descendant)
+        autoInteract = state
+        if autoInteract then
+            -- 开始自动互动循环
+            local player = game.Players.LocalPlayer
+            while autoInteract and task.wait(0.5) do
+                -- 检查玩家角色是否存在
+                if player.Character then
+                    local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                    if rootPart then
+                        local playerPos = rootPart.Position
+                        -- 遍历场景中的ProximityPrompt
+                        for _, prompt in pairs(workspace:GetDescendants()) do
+                            if prompt:IsA("ProximityPrompt") and prompt.Parent then
+                                -- 检查是否在10米范围内
+                                local part = prompt.Parent:FindFirstChildOfClass("BasePart")
+                                if part then
+                                    local distance = (part.Position - playerPos).Magnitude
+                                    if distance <= 10 then
+                                        fireproximityprompt(prompt) -- 触发互动
+                                    end
+                                end
+                            end
+                        end
                     end
                 end
-                task.wait(0.5)
             end
-        else
-            autoInteract = false
         end
-        
-    end
+		end
 })
 Tab:AddButton({
 	Name = "一直丢绿宝石（费钱）",
