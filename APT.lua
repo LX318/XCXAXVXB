@@ -94,31 +94,30 @@ Tab:AddToggle({
         autoInteract = state
         if autoInteract then
             -- 开始自动互动循环
-            local player = game.Players.LocalPlayer
-            while autoInteract and task.wait(0.5) do
-                -- 检查玩家角色是否存在
-                if player.Character then
-                    local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
-                    if rootPart then
-                        local playerPos = rootPart.Position
+            spawn(function()
+                local player = game.Players.LocalPlayer
+                while autoInteract and task.wait(0.1) do -- 降低延迟，提高响应速度
+                    -- 检查玩家角色是否存在
+                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        local rootPos = player.Character.HumanoidRootPart.Position
                         -- 遍历场景中的ProximityPrompt
-                        for _, prompt in pairs(workspace:GetDescendants()) do
-                            if prompt:IsA("ProximityPrompt") and prompt.Parent then
+                        for _, obj in pairs(workspace:GetDescendants()) do
+                            if autoInteract and obj:IsA("ProximityPrompt") then
                                 -- 检查是否在10米范围内
-                                local part = prompt.Parent:FindFirstChildOfClass("BasePart")
-                                if part then
-                                    local distance = (part.Position - playerPos).Magnitude
+                                local parent = obj.Parent
+                                if parent and parent:IsA("BasePart") then
+                                    local distance = (parent.Position - rootPos).Magnitude
                                     if distance <= 10 then
-                                        fireproximityprompt(prompt) -- 触发互动
+                                        fireproximityprompt(obj) -- 触发互动
                                     end
                                 end
                             end
                         end
                     end
                 end
-            end
+            end)
         end
-		end
+    end
 })
 Tab:AddButton({
 	Name = "一直丢绿宝石（费钱）",
