@@ -1168,7 +1168,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
                 local function AddOptions(Options)
                     for _, Option in pairs(Options) do
-                        local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(255, 255, 255))), {
+                        local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(255, 255, 255)), {
                             MakeElement("Corner", 0, 4),
                             AddThemeObject(SetProps(MakeElement("Label", Option, 13, 0), {
                                 Position = UDim2.new(0, 8, 0, 0),
